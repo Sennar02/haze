@@ -1,0 +1,3 @@
+[submodule "subprojects/smal"]
+	path = subprojects/smal
+	url = git@github.com:Sennar02/smal.git

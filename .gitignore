@@ -1,0 +1,9 @@
+target
+
+.*
+
+!.gitignore
+!.gitmodules
+
+!.clang-format
+!.clang-tidy
