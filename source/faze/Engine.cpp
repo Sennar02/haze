@@ -20,7 +20,7 @@ namespace fz
     }
 
     void
-    Engine::loop(Screen* start, ma::usize frames)
+    Engine::loop(ma::usize screen, ma::usize frames)
     {
         // Move "start", "frames" after resource management
 
@@ -28,7 +28,7 @@ namespace fz
         sf::Time  delta;
         sf::Event event;
 
-        if ( this->m_states.launch(start) == false )
+        if ( this->m_states.launch(screen) == false )
             return;
 
         // Move after resource management

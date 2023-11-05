@@ -7,7 +7,6 @@ namespace fz
 {
     class Engine;
     class Screen;
-    union ScreenChange;
     class ScreenMachine;
 } // namespace fz
 

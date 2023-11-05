@@ -17,25 +17,31 @@ namespace fz
          *
          */
         bool
-        contains(const ScreenChange& change) const;
+        contains(Screen* screen) const;
 
         /**
          *
          */
         bool
-        insert(const ScreenChange& change, Screen* screen);
+        insert(Screen* screen);
 
         /**
          *
          */
         bool
-        remove(const ScreenChange& change);
+        remove(Screen* screen);
 
         /**
          *
          */
         bool
-        launch(Screen* screen);
+        launch(ma::usize screen);
+
+        /**
+         *
+         */
+        bool
+        change(ma::usize screen);
 
         /**
          *
@@ -59,7 +65,7 @@ namespace fz
         /**
          *
          */
-        ma::HashMap<ma::u32, Screen*> m_holder;
+        ma::HashMap<ma::usize, Screen*> m_holder;
 
         /**
          *

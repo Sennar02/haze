@@ -3,47 +3,26 @@
 
 namespace fz
 {
-    Screen::Screen(ma::u16 code)
-        : m_code {code}
+    Screen::Screen(ma::usize self)
+        : m_self {self}
         , m_next {0}
     { }
 
-    ma::u16
-    Screen::code() const
+    ma::usize
+    Screen::self() const
     {
-        return this->m_code;
+        return this->m_self;
     }
 
-    ma::u16
+    ma::usize
     Screen::next() const
     {
         return this->m_next;
     }
 
     void
-    Screen::set_next(ma::u16 next)
+    Screen::set_next(ma::usize next)
     {
         this->m_next = next;
-    }
-
-    ScreenChange::ScreenChange()
-        : m_curr {0}
-        , m_next {0}
-    { }
-
-    ScreenChange::ScreenChange(Screen& curr, Screen& next)
-        : m_curr {curr.code()}
-        , m_next {next.code()}
-    { }
-
-    ScreenChange::ScreenChange(ma::u16 curr, ma::u16 next)
-        : m_curr {curr}
-        , m_next {next}
-    { }
-
-    ma::u32
-    ScreenChange::index() const
-    {
-        return this->m_index;
     }
 } // namespace fz

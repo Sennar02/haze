@@ -1,10 +1,10 @@
 #include <faze/import.hpp>
 
-class TitleScreen
+class SplashScreen
     : public fz::Screen
 {
 public:
-    TitleScreen()
+    SplashScreen()
         : Screen(1)
     {
         this->set_next(2);
@@ -13,13 +13,13 @@ public:
     void
     startup()
     {
-        printf("TitleScreen starting...\n");
+        printf("SplashScreen starting...\n");
     }
 
     void
     cleanup()
     {
-        printf("TitleScreen stopping...\n");
+        printf("SplashScreen stopping...\n");
     }
 
     bool
@@ -59,11 +59,11 @@ public:
     }
 };
 
-class ConfgScreen
+class ConfigScreen
     : public fz::Screen
 {
 public:
-    ConfgScreen()
+    ConfigScreen()
         : Screen(2)
     {
         this->set_next(3);
@@ -72,13 +72,13 @@ public:
     void
     startup()
     {
-        printf("ConfgScreen starting...\n");
+        printf("ConfigScreen starting...\n");
     }
 
     void
     cleanup()
     {
-        printf("ConfgScreen stopping...\n");
+        printf("ConfigScreen stopping...\n");
     }
 
     bool
@@ -114,24 +114,24 @@ public:
     }
 };
 
-class EndngScreen
+class EndingScreen
     : public fz::Screen
 {
 public:
-    EndngScreen()
+    EndingScreen()
         : Screen(3)
     { }
 
     void
     startup()
     {
-        printf("EndngScreen starting...\n");
+        printf("EndingScreen starting...\n");
     }
 
     void
     cleanup()
     {
-        printf("EndngScreen stopping...\n");
+        printf("EndingScreen stopping...\n");
     }
 
     bool
@@ -177,20 +177,16 @@ main(int argc, const char* argv[])
         auto pool = ma::PoolOrigin {memory, 65536, 8192};
         auto game = fz::Engine {&pool, 16};
 
-        auto title = TitleScreen {};
-        auto confg = ConfgScreen {};
-        auto endng = EndngScreen {};
+        auto splash = SplashScreen {};
+        auto config = ConfigScreen {};
+        auto ending = EndingScreen {};
 
-        auto t_to_c = fz::ScreenChange {title, confg};
-        auto c_to_e = fz::ScreenChange {confg, endng};
-        auto t_to_e = fz::ScreenChange {title, endng};
-
-        game.states().insert(t_to_c, &confg);
-        game.states().insert(c_to_e, &endng);
-        game.states().insert(t_to_e, &endng);
+        game.states().insert(&splash);
+        game.states().insert(&config);
+        game.states().insert(&ending);
 
         if ( game.is_active() )
-            game.loop(&title);
+            game.loop(splash.self());
     }
 
     free(memory);

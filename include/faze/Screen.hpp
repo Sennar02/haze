@@ -11,7 +11,7 @@ namespace fz
         /**
          *
          */
-        Screen(ma::u16 code);
+        Screen(ma::usize index);
 
         /**
          *
@@ -21,32 +21,32 @@ namespace fz
         /**
          *
          */
-        ma::u16
-        code() const;
+        ma::usize
+        self() const;
 
         /**
          *
          */
-        ma::u16
+        ma::usize
         next() const;
 
         /**
          *
          */
         void
-        set_next(ma::u16 code);
+        set_next(ma::usize index);
 
         /**
          *
          */
         virtual void
-        startup() = 0;
+        startup() {};
 
         /**
          *
          */
         virtual void
-        cleanup() = 0;
+        cleanup() {};
 
         /**
          *
@@ -70,56 +70,12 @@ namespace fz
         /**
          *
          */
-        ma::u16 m_code;
+        ma::usize m_self;
 
         /**
          *
          */
-        ma::u16 m_next;
-    };
-
-    union ScreenChange
-    {
-    public:
-        /**
-         *
-         */
-        ScreenChange();
-
-        /**
-         *
-         */
-        ScreenChange(Screen& curr, Screen& next);
-
-        /**
-         *
-         */
-        ScreenChange(ma::u16 curr, ma::u16 next);
-
-        /**
-         *
-         */
-        ma::u32
-        index() const;
-
-    private:
-        struct
-        {
-            /**
-             *
-             */
-            ma::u16 m_curr;
-
-            /**
-             *
-             */
-            ma::u16 m_next;
-        };
-
-        /**
-         *
-         */
-        ma::u32 m_index;
+        ma::usize m_next;
     };
 } // namespace fz
 

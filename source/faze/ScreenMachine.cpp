@@ -8,33 +8,54 @@ namespace fz
     { }
 
     bool
-    ScreenMachine::contains(const ScreenChange& change) const
+    ScreenMachine::contains(Screen* screen) const
     {
-        return this->m_holder.contains(change.index());
-    }
-
-    bool
-    ScreenMachine::insert(const ScreenChange& change, Screen* screen)
-    {
-        if ( change.index() != 0 )
-            return this->m_holder.insert(change.index(), screen);
+        if ( screen != 0 )
+            return this->m_holder.contains(screen->self());
 
         return false;
     }
 
     bool
-    ScreenMachine::remove(const ScreenChange& change)
+    ScreenMachine::insert(Screen* screen)
     {
-        return this->m_holder.remove(change.index());
+        if ( screen != 0 && screen->self() != 0 )
+            return this->m_holder.insert(screen->self(), screen);
+
+        return false;
     }
 
     bool
-    ScreenMachine::launch(Screen* screen)
+    ScreenMachine::remove(Screen* screen)
     {
-        if ( screen != 0 ) {
-            this->m_screen = screen;
+        if ( screen != 0 )
+            return this->m_holder.remove(screen->self());
 
+        return false;
+    }
+
+    bool
+    ScreenMachine::launch(ma::usize screen)
+    {
+        if ( this->m_holder.contains(screen) == true ) {
+            this->m_screen = this->m_holder[screen];
             this->m_screen->startup();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    bool
+    ScreenMachine::change(ma::usize screen)
+    {
+        this->m_screen->cleanup();
+
+        if ( this->m_holder.contains(screen) == true ) {
+            this->m_screen = this->m_holder[screen];
+            this->m_screen->startup();
+
             return true;
         }
 
@@ -44,28 +65,14 @@ namespace fz
     bool
     ScreenMachine::handle(const sf::Event& event)
     {
-        ScreenChange change;
+        ma::usize next = 0;
 
-        if ( this->m_screen == 0 ) return false;
-
-        if ( this->m_screen->handle(event) == false ) {
-            change = {
-                this->m_screen->code(),
-                this->m_screen->next(),
-            };
-
-            this->m_screen->cleanup();
-
-            if ( this->m_holder.contains(change.index()) ) {
-                this->m_screen = this->m_holder[change.index()];
-
-                this->m_screen->startup();
-                return true;
-            }
-        } else
+        if ( this->m_screen->handle(event) == true )
             return true;
 
-        return false;
+        next = this->m_screen->next();
+
+        return this->change(next);
     }
 
     void
