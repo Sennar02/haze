@@ -1,32 +1,41 @@
 #include <faze/import.hpp>
 
-class SplashScreen
+enum Screens
+{
+    A = 1,
+    B,
+    C,
+
+    SIZE,
+};
+
+class AScreen
     : public fz::Screen
 {
 public:
-    SplashScreen()
-        : Screen(1)
+    AScreen()
+        : Screen()
     {
-        this->set_next(2);
+        this->set_next(Screens::B);
     }
 
     void
-    startup()
+    on_enter()
     {
-        printf("SplashScreen starting...\n");
+        printf("AScreen starting...\n");
     }
 
     void
-    cleanup()
+    on_leave()
     {
-        printf("SplashScreen stopping...\n");
+        printf("AScreen stopping...\n");
     }
 
     bool
-    handle(const sf::Event& event)
+    on_handle(const sf::Event& event)
     {
         if ( event.type == sf::Event::Closed ) {
-            this->set_next(3);
+            this->set_next(Screens::C);
 
             return false;
         }
@@ -40,11 +49,11 @@ public:
     }
 
     void
-    update(float delta)
+    on_update(float delta)
     { }
 
     void
-    render(sf::RenderTarget& target)
+    on_render(sf::RenderTarget& target)
     {
         sf::RectangleShape rect;
 
@@ -59,30 +68,30 @@ public:
     }
 };
 
-class ConfigScreen
+class BScreen
     : public fz::Screen
 {
 public:
-    ConfigScreen()
-        : Screen(2)
+    BScreen()
+        : Screen()
     {
-        this->set_next(3);
+        this->set_next(Screens::C);
     }
 
     void
-    startup()
+    on_enter()
     {
-        printf("ConfigScreen starting...\n");
+        printf("BScreen starting...\n");
     }
 
     void
-    cleanup()
+    on_leave()
     {
-        printf("ConfigScreen stopping...\n");
+        printf("BScreen stopping...\n");
     }
 
     bool
-    handle(const sf::Event& event)
+    on_handle(const sf::Event& event)
     {
         if ( event.type == sf::Event::Closed )
             return false;
@@ -96,11 +105,11 @@ public:
     }
 
     void
-    update(float delta)
+    on_update(float delta)
     { }
 
     void
-    render(sf::RenderTarget& target)
+    on_render(sf::RenderTarget& target)
     {
         sf::CircleShape circ;
 
@@ -114,28 +123,28 @@ public:
     }
 };
 
-class EndingScreen
+class CScreen
     : public fz::Screen
 {
 public:
-    EndingScreen()
-        : Screen(3)
+    CScreen()
+        : Screen()
     { }
 
     void
-    startup()
+    on_enter()
     {
-        printf("EndingScreen starting...\n");
+        printf("CScreen starting...\n");
     }
 
     void
-    cleanup()
+    on_leave()
     {
-        printf("EndingScreen stopping...\n");
+        printf("CScreen stopping...\n");
     }
 
     bool
-    handle(const sf::Event& event)
+    on_handle(const sf::Event& event)
     {
         if ( event.type == sf::Event::Closed )
             return false;
@@ -149,11 +158,11 @@ public:
     }
 
     void
-    update(float delta)
+    on_update(float delta)
     { }
 
     void
-    render(sf::RenderTarget& target)
+    on_render(sf::RenderTarget& target)
     {
         sf::RectangleShape rect;
 
@@ -177,16 +186,16 @@ main(int argc, const char* argv[])
         auto pool = ma::PoolOrigin {memory, 65536, 8192};
         auto game = fz::Engine {&pool, 16};
 
-        auto splash = SplashScreen {};
-        auto config = ConfigScreen {};
-        auto ending = EndingScreen {};
+        AScreen a;
+        BScreen b;
+        CScreen c;
 
-        game.states().insert(&splash);
-        game.states().insert(&config);
-        game.states().insert(&ending);
+        game.states().insert(Screens::A, &a);
+        game.states().insert(Screens::B, &b);
+        game.states().insert(Screens::C, &c);
 
         if ( game.is_active() )
-            game.loop(splash.self());
+            game.loop(Screens::A);
     }
 
     free(memory);

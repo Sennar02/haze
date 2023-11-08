@@ -3,21 +3,27 @@
 
 namespace fz
 {
-    Screen::Screen(ma::usize self)
-        : m_self {self}
+    Screen::Screen()
+        : m_code {0}
         , m_next {0}
     { }
 
     ma::usize
-    Screen::self() const
+    Screen::code() const
     {
-        return this->m_self;
+        return this->m_code;
     }
 
     ma::usize
     Screen::next() const
     {
         return this->m_next;
+    }
+
+    void
+    Screen::set_code(ma::usize code)
+    {
+        this->m_code = code;
     }
 
     void

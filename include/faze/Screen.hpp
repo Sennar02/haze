@@ -11,7 +11,7 @@ namespace fz
         /**
          *
          */
-        Screen(ma::usize index);
+        Screen();
 
         /**
          *
@@ -22,7 +22,7 @@ namespace fz
          *
          */
         ma::usize
-        self() const;
+        code() const;
 
         /**
          *
@@ -34,43 +34,49 @@ namespace fz
          *
          */
         void
-        set_next(ma::usize index);
+        set_code(ma::usize code);
+
+        /**
+         *
+         */
+        void
+        set_next(ma::usize next);
 
         /**
          *
          */
         virtual void
-        startup() {};
+        on_enter() {};
 
         /**
          *
          */
         virtual void
-        cleanup() {};
+        on_leave() {};
 
         /**
          *
          */
         virtual bool
-        handle(const sf::Event& event) = 0;
+        on_handle(const sf::Event& event) = 0;
 
         /**
          *
          */
         virtual void
-        update(float delta) = 0;
+        on_update(float delta) = 0;
 
         /**
          *
          */
         virtual void
-        render(sf::RenderTarget& target) = 0;
+        on_render(sf::RenderTarget& target) = 0;
 
     private:
         /**
          *
          */
-        ma::usize m_self;
+        ma::usize m_code;
 
         /**
          *

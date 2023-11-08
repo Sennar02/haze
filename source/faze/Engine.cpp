@@ -47,13 +47,13 @@ namespace fz
         }
     }
 
-    ScreenMachine&
+    StateMachine<Screen>&
     Engine::states()
     {
         return this->m_states;
     }
 
-    const ScreenMachine&
+    const StateMachine<Screen>&
     Engine::states() const
     {
         return this->m_states;
@@ -62,24 +62,38 @@ namespace fz
     void
     Engine::handle(const sf::Event& event)
     {
-        this->m_active = this->m_states.handle(event);
+        Screen* active = this->m_states.active();
+
+        if ( active != 0 ) {
+            if ( active->on_handle(event) == false )
+                this->m_active = this->m_states.launch(active->next());
+            else
+                this->m_active = true;
+        } else
+            this->m_active = false;
     }
 
     void
     Engine::update(float delta)
     {
-        this->m_states.update(delta);
+        Screen* active = this->m_states.active();
+
+        if ( active != 0 )
+            active->on_update(delta);
     }
 
     void
     Engine::render(sf::RenderWindow& window)
     {
+        Screen* active = this->m_states.active();
+
         // Move after resource management
         auto clear = sf::Color {255, 255, 255};
 
         window.clear(clear);
 
-        this->m_states.render(window);
+        if ( active != 0 )
+            active->on_render(window);
 
         window.display();
     }

@@ -7,7 +7,9 @@ namespace fz
 {
     class Engine;
     class Screen;
-    class ScreenMachine;
+
+    template <class State>
+    class StateMachine;
 } // namespace fz
 
 #endif // FAZE_DEFINE_HPP

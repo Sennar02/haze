@@ -1,7 +1,8 @@
 #ifndef FAZE_ENGINE_HPP
 #define FAZE_ENGINE_HPP
 
-#include <faze/ScreenMachine.hpp>
+#include <faze/StateMachine.hpp>
+#include <faze/Screen.hpp>
 
 namespace fz
 {
@@ -41,10 +42,10 @@ namespace fz
         void
         loop(ma::usize screen, ma::usize frames = 60);
 
-        ScreenMachine&
+        StateMachine<Screen>&
         states();
 
-        const ScreenMachine&
+        const StateMachine<Screen>&
         states() const;
 
     private:
@@ -68,7 +69,7 @@ namespace fz
         sf::Clock        m_clock;
         bool             m_active;
 
-        ScreenMachine m_states;
+        StateMachine<Screen> m_states;
     };
 } // namespace fz
 
