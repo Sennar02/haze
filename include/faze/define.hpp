@@ -10,6 +10,15 @@ namespace fz
 
     template <class State>
     class StateMachine;
+
+    enum Screens
+    {
+        Title = 1,
+        Game,
+        Exit,
+
+        SIZE,
+    };
 } // namespace fz
 
 #endif // FAZE_DEFINE_HPP
