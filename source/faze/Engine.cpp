@@ -20,7 +20,7 @@ namespace fz
     }
 
     void
-    Engine::loop(ma::usize screen, ma::usize frames)
+    Engine::loop(ma::u16 index, ma::usize frames)
     {
         // Move "start", "frames" after resource management
 
@@ -28,7 +28,7 @@ namespace fz
         sf::Time  delta;
         sf::Event event;
 
-        if ( this->m_states.launch(screen) == false )
+        if ( this->m_states.launch(index, 0) == false )
             return;
 
         // Move after resource management
@@ -66,7 +66,9 @@ namespace fz
 
         if ( active != 0 ) {
             if ( active->on_handle(event) == false )
-                this->m_active = this->m_states.launch(active->next());
+                this->m_active = this->m_states.launch(
+                    active->index(),
+                    active->event());
             else
                 this->m_active = true;
         } else

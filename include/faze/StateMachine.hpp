@@ -1,7 +1,8 @@
 #ifndef FAZE_STATE_MACHINE_HPP
 #define FAZE_STATE_MACHINE_HPP
 
-#include <faze/Screen.hpp>
+#include <faze/define.hpp>
+#include <faze/StateTransit.hpp>
 
 namespace fz
 {
@@ -18,25 +19,31 @@ namespace fz
          *
          */
         bool
-        contains(ma::usize index) const;
+        contains(ma::u16 index, ma::u16 event) const;
 
         /**
          *
          */
         bool
-        insert(ma::usize index, State* state);
+        insert(const StateTransit& transit, State* state);
 
         /**
          *
          */
         bool
-        remove(ma::usize index);
+        remove(ma::u16 index, ma::u16 event);
 
         /**
          *
          */
         bool
-        launch(ma::usize index);
+        launch(ma::u16 index, ma::u16 event);
+
+        /**
+         *
+         */
+        bool
+        launch(State* state);
 
         /**
          *
@@ -54,7 +61,7 @@ namespace fz
         /**
          *
          */
-        ma::HashMap<ma::usize, State*> m_holder;
+        ma::HashMap<ma::u32, State*> m_holder;
 
         /**
          *

@@ -21,26 +21,26 @@ namespace fz
         /**
          *
          */
-        ma::usize
-        code() const;
+        ma::u16
+        index() const;
 
         /**
          *
          */
-        ma::usize
-        next() const;
-
-        /**
-         *
-         */
-        void
-        set_code(ma::usize code);
+        ma::u16
+        event() const;
 
         /**
          *
          */
         void
-        set_next(ma::usize next);
+        set_index(ma::u16 index);
+
+        /**
+         *
+         */
+        void
+        set_event(ma::u16 event);
 
         /**
          *
@@ -76,12 +76,12 @@ namespace fz
         /**
          *
          */
-        ma::usize m_code;
+        ma::u16 m_index;
 
         /**
          *
          */
-        ma::usize m_next;
+        ma::u16 m_event;
     };
 } // namespace fz
 

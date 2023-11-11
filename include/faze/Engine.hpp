@@ -40,7 +40,7 @@ namespace fz
         is_active() const;
 
         void
-        loop(ma::usize screen, ma::usize frames = 60);
+        loop(ma::u16 index, ma::usize frames = 60);
 
         StateMachine<Screen>&
         states();

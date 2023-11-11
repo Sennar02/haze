@@ -8,13 +8,16 @@ namespace fz
     class Engine;
     class Screen;
 
+    struct StateTransit;
+
     template <class State>
     class StateMachine;
 
     enum Screens
     {
-        Title = 1,
-        Game,
+        Start = 1,
+        Title,
+        Config,
         Exit,
 
         SIZE,

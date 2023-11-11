@@ -13,8 +13,6 @@ namespace fz
         if ( this->m_font.loadFromFile("../assets/jetbrains-mono-regular.ttf") == false )
             return;
 
-        this->set_next(Screens::Game);
-
         this->m_text.setFont(this->m_font);
         this->m_text.setCharacterSize(20);
         this->m_text.setString("Ghesboro");

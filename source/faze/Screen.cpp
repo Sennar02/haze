@@ -4,31 +4,31 @@
 namespace fz
 {
     Screen::Screen()
-        : m_code {0}
-        , m_next {0}
+        : m_index {0}
+        , m_event {0}
     { }
 
-    ma::usize
-    Screen::code() const
+    ma::u16
+    Screen::index() const
     {
-        return this->m_code;
+        return this->m_index;
     }
 
-    ma::usize
-    Screen::next() const
+    ma::u16
+    Screen::event() const
     {
-        return this->m_next;
-    }
-
-    void
-    Screen::set_code(ma::usize code)
-    {
-        this->m_code = code;
+        return this->m_event;
     }
 
     void
-    Screen::set_next(ma::usize next)
+    Screen::set_index(ma::u16 index)
     {
-        this->m_next = next;
+        this->m_index = index;
+    }
+
+    void
+    Screen::set_event(ma::u16 event)
+    {
+        this->m_event = event;
     }
 } // namespace fz

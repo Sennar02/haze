@@ -7,8 +7,10 @@
 #include <faze/Engine.hpp>
 #include <faze/Screen.hpp>
 
+#include <faze/StateTransit.hpp>
 #include <faze/StateMachine.hpp>
 
 #include <faze/TitleScreen.hpp>
+#include <faze/ConfigScreen.hpp>
 
 #endif // FAZE_IMPORT_HPP
