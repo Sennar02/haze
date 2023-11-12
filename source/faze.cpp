@@ -10,8 +10,16 @@ main(int argc, const char* argv[])
         auto game = fz::Engine {&pool, 16};
 
         fz::TitleScreen title;
+        fz::LevelScreen level;
 
         game.states().insert(fz::Screens::Title, &title);
+        game.states().insert(fz::Screens::Level, &level);
+
+        printf("Screens:\n");
+
+        game.states().for_each([](auto& key, auto& val) {
+            printf("  - m(%u) = %p\n", key, val);
+        });
 
         if ( game.is_active() )
             game.loop(fz::Screens::Title);

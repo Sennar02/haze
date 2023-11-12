@@ -10,5 +10,6 @@
 #include <faze/StateMachine.hpp>
 
 #include <faze/TitleScreen.hpp>
+#include <faze/LevelScreen.hpp>
 
 #endif // FAZE_IMPORT_HPP

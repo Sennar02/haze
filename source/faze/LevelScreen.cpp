@@ -1,9 +1,9 @@
-#include <faze/TitleScreen.hpp>
+#include <faze/LevelScreen.hpp>
 #include <faze/Engine.hpp>
 
 namespace fz
 {
-    TitleScreen::TitleScreen()
+    LevelScreen::LevelScreen()
         : Screen()
         , m_font {}
         , m_text {}
@@ -11,12 +11,12 @@ namespace fz
         if ( this->m_font.loadFromFile("../assets/jetbrains-mono-regular.ttf") == false )
             return;
 
-        this->set_next(Screens::Level);
+        this->set_next(Screens::Exit);
 
         this->m_text.setFont(this->m_font);
         this->m_text.setCharacterSize(20);
-        this->m_text.setFillColor(sf::Color::Black);
-        this->m_text.setString("TITLE");
+        this->m_text.setFillColor(sf::Color::Red);
+        this->m_text.setString("LEVEL");
 
         auto size = this->m_text.getGlobalBounds();
 
@@ -26,15 +26,15 @@ namespace fz
     }
 
     void
-    TitleScreen::enter()
+    LevelScreen::enter()
     { }
 
     void
-    TitleScreen::leave()
+    LevelScreen::leave()
     { }
 
     ma::u32
-    TitleScreen::handle(const sf::Event& event)
+    LevelScreen::handle(const sf::Event& event)
     {
         if ( event.type == sf::Event::Closed )
             return this->next();
@@ -48,11 +48,11 @@ namespace fz
     }
 
     void
-    TitleScreen::update(float delta)
+    LevelScreen::update(float delta)
     { }
 
     void
-    TitleScreen::render(sf::RenderTarget& target)
+    LevelScreen::render(sf::RenderTarget& target)
     {
         target.draw(this->m_text);
     }

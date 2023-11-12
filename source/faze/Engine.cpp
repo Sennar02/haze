@@ -45,6 +45,8 @@ namespace fz
 
             this->render(this->m_window);
         }
+
+        this->m_window.close();
     }
 
     StateMachine<Screen>&
@@ -63,12 +65,13 @@ namespace fz
     Engine::handle(const sf::Event& event)
     {
         Screen* active = this->m_states.active();
+        ma::u32 next   = 0;
 
         if ( active != 0 ) {
-            if ( active->on_handle(event) == false )
-                this->m_active = this->m_states.launch(active->next());
-            else
-                this->m_active = true;
+            next = active->handle(event);
+
+            if ( next != 0 )
+                this->m_active = this->m_states.launch(next);
         } else
             this->m_active = false;
     }
@@ -79,7 +82,7 @@ namespace fz
         Screen* active = this->m_states.active();
 
         if ( active != 0 )
-            active->on_update(delta);
+            active->update(delta);
     }
 
     void
@@ -93,7 +96,7 @@ namespace fz
         window.clear(clear);
 
         if ( active != 0 )
-            active->on_render(window);
+            active->render(window);
 
         window.display();
     }

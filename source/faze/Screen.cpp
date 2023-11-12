@@ -4,30 +4,30 @@
 namespace fz
 {
     Screen::Screen()
-        : m_code {0}
-        , m_next {0}
+        : m_code {(ma::u32) -1}
+        , m_next {(ma::u32) -1}
     { }
 
-    ma::usize
+    ma::u32
     Screen::code() const
     {
         return this->m_code;
     }
 
-    ma::usize
+    ma::u32
     Screen::next() const
     {
         return this->m_next;
     }
 
     void
-    Screen::set_code(ma::usize code)
+    Screen::set_code(ma::u32 code)
     {
         this->m_code = code;
     }
 
     void
-    Screen::set_next(ma::usize next)
+    Screen::set_next(ma::u32 next)
     {
         this->m_next = next;
     }

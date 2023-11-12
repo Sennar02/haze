@@ -21,67 +21,67 @@ namespace fz
         /**
          *
          */
-        ma::usize
+        ma::u32
         code() const;
 
         /**
          *
          */
-        ma::usize
+        ma::u32
         next() const;
 
         /**
          *
          */
         void
-        set_code(ma::usize code);
+        set_code(ma::u32 code);
 
         /**
          *
          */
         void
-        set_next(ma::usize next);
+        set_next(ma::u32 next);
 
         /**
          *
          */
         virtual void
-        on_enter() {};
+        enter() {};
 
         /**
          *
          */
         virtual void
-        on_leave() {};
+        leave() {};
 
         /**
          *
          */
-        virtual bool
-        on_handle(const sf::Event& event) = 0;
-
-        /**
-         *
-         */
-        virtual void
-        on_update(float delta) = 0;
+        virtual ma::u32
+        handle(const sf::Event& event) = 0;
 
         /**
          *
          */
         virtual void
-        on_render(sf::RenderTarget& target) = 0;
+        update(float delta) = 0;
+
+        /**
+         *
+         */
+        virtual void
+        render(sf::RenderTarget& target) = 0;
 
     private:
         /**
          *
          */
-        ma::usize m_code;
+        ma::u32 m_code;
 
         /**
          *
          */
-        ma::usize m_next;
+        ma::u32 m_next;
     };
 } // namespace fz
 

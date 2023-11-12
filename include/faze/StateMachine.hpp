@@ -7,6 +7,7 @@ namespace fz
 {
     template <class State>
     class StateMachine
+        : public ma::HashMap<ma::u32, State*>
     {
     public:
         /**
@@ -18,25 +19,13 @@ namespace fz
          *
          */
         bool
-        contains(ma::usize index) const;
+        insert(ma::u32 index, State* state);
 
         /**
          *
          */
         bool
-        insert(ma::usize index, State* state);
-
-        /**
-         *
-         */
-        bool
-        remove(ma::usize index);
-
-        /**
-         *
-         */
-        bool
-        launch(ma::usize index);
+        launch(ma::u32 index);
 
         /**
          *
@@ -51,11 +40,6 @@ namespace fz
         active() const;
 
     private:
-        /**
-         *
-         */
-        ma::HashMap<ma::usize, State*> m_holder;
-
         /**
          *
          */

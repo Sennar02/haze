@@ -1,15 +1,15 @@
-#ifndef FAZE_TITLE_SCREEN_HPP
-#define FAZE_TITLE_SCREEN_HPP
+#ifndef FAZE_LEVEL_SCREEN_HPP
+#define FAZE_LEVEL_SCREEN_HPP
 
 #include <faze/Screen.hpp>
 
 namespace fz
 {
-    class TitleScreen
+    class LevelScreen
         : public Screen
     {
     public:
-        TitleScreen();
+        LevelScreen();
 
         void
         enter();
@@ -32,4 +32,4 @@ namespace fz
     };
 } // namespace fz
 
-#endif // FAZE_TITLE_SCREEN_HPP
+#endif // FAZE_LEVEL_SCREEN_HPP

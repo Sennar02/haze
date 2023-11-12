@@ -14,7 +14,7 @@ namespace fz
     enum Screens
     {
         Title = 1,
-        Game,
+        Level,
         Exit,
 
         SIZE,

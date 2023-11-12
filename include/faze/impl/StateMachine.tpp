@@ -4,47 +4,38 @@ namespace fz
 {
     template <class State>
     StateMachine<State>::StateMachine(ma::BaseOrigin* origin, ma::usize size)
-        : m_holder {origin, size}
+        : ma::HashMap<ma::u32, State*>(origin, size)
         , m_active {0}
     { }
 
     template <class State>
     bool
-    StateMachine<State>::contains(ma::usize index) const
+    StateMachine<State>::insert(ma::u32 index, State* state)
     {
-        return this->m_holder.contains(index);
+        auto& super = (ma::HashMap<ma::u32, State*>&) *this;
+
+        if ( index != 0 && state != 0 ) {
+            state->set_code(index);
+
+            return super
+                .insert(index, state);
+        }
+
+        return false;
     }
 
     template <class State>
     bool
-    StateMachine<State>::insert(ma::usize index, State* state)
+    StateMachine<State>::launch(ma::u32 index)
     {
-        if ( state == 0 || index == 0 )
-            return false;
+        auto& super = (ma::HashMap<ma::u32, State*>&) *this;
 
-        state->set_code(index);
-
-        return this->m_holder
-            .insert(index, state);
-    }
-
-    template <class State>
-    bool
-    StateMachine<State>::remove(ma::usize index)
-    {
-        return this->m_holder.remove(index);
-    }
-
-    template <class State>
-    bool
-    StateMachine<State>::launch(ma::usize index)
-    {
         if ( this->m_active != 0 )
-            this->m_active->on_leave();
+            this->m_active->leave();
 
-        if ( this->m_holder.contains(index) == true ) {
-            this->m_active = this->m_holder[index];
-            this->m_active->on_enter();
+        if ( super.contains(index) == true ) {
+            this->m_active = super[index];
+            this->m_active->enter();
         } else
             this->m_active = 0;
 
