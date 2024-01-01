@@ -1,5 +1,5 @@
 #include <faze/Engine.hpp>
-#include <faze/Screen.hpp>
+#include <faze/State.hpp>
 
 #include <smal/Memory/import.hpp>
 #include <smal/Parser/import.hpp>
@@ -45,15 +45,18 @@ namespace fz
 
             this->render(this->m_window);
         }
+
+        this->m_states.finish();
+        this->m_window.close();
     }
 
-    StateMachine<Screen>&
+    StateMachine<State>&
     Engine::states()
     {
         return this->m_states;
     }
 
-    const StateMachine<Screen>&
+    const StateMachine<State>&
     Engine::states() const
     {
         return this->m_states;
@@ -62,15 +65,17 @@ namespace fz
     void
     Engine::handle(const sf::Event& event)
     {
-        Screen* active = this->m_states.active();
+        State*  active = this->m_states.active();
+        ma::u16 family = 0;
+        ma::u16 status = 0;
 
         if ( active != 0 ) {
-            if ( active->on_handle(event) == false )
+            family = active->family();
+            status = active->handle(event);
+
+            if ( status != 0 )
                 this->m_active = this->m_states.launch(
-                    active->index(),
-                    active->event());
-            else
-                this->m_active = true;
+                    family, status);
         } else
             this->m_active = false;
     }
@@ -78,16 +83,16 @@ namespace fz
     void
     Engine::update(float delta)
     {
-        Screen* active = this->m_states.active();
+        State* active = this->m_states.active();
 
         if ( active != 0 )
-            active->on_update(delta);
+            active->update(delta);
     }
 
     void
     Engine::render(sf::RenderWindow& window)
     {
-        Screen* active = this->m_states.active();
+        State* active = this->m_states.active();
 
         // Move after resource management
         auto clear = sf::Color {255, 255, 255};
@@ -95,7 +100,7 @@ namespace fz
         window.clear(clear);
 
         if ( active != 0 )
-            active->on_render(window);
+            active->render(window);
 
         window.display();
     }

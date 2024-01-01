@@ -1,7 +1,7 @@
 #ifndef FAZE_DEPEND_HPP
 #define FAZE_DEPEND_HPP
 
-#include <smal/Struct/import.hpp>
+#include <smal/Algo/import.hpp>
 
 #include <SFML/Graphics.hpp>
 

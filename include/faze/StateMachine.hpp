@@ -43,7 +43,7 @@ namespace fz
          *
          */
         bool
-        launch(State* state);
+        finish();
 
         /**
          *

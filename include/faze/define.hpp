@@ -6,14 +6,14 @@
 namespace fz
 {
     class Engine;
-    class Screen;
+    class State;
 
     struct StateTransit;
 
     template <class State>
     class StateMachine;
 
-    enum Screens
+    enum States
     {
         Start = 1,
         Title,

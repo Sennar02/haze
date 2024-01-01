@@ -52,13 +52,11 @@ namespace fz
         auto helper =
             impl::StateTransit {transit.state, transit.event};
 
-        if ( state == 0 || helper.total() == 0 )
-            return false;
+        if ( state != 0 && helper.total() != 0 )
+            if ( this->m_holder.insert(helper.total(), state) )
+                return state->attach();
 
-        state->set_index(transit.next);
-
-        return this->m_holder
-            .insert(helper.total(), state);
+        return false;
     }
 
     template <class State>
@@ -68,7 +66,11 @@ namespace fz
         auto transit =
             impl::StateTransit {index, event};
 
-        return this->m_holder.remove(transit.total());
+        if ( this->m_holder.contains(transit.total()) )
+            this->m_holder[transit.total()]->detach();
+
+        return this->m_holder
+            .remove(transit.total());
     }
 
     template <class State>
@@ -79,15 +81,26 @@ namespace fz
             impl::StateTransit {index, event};
 
         if ( this->m_active != 0 )
-            this->m_active->on_leave();
+            this->m_active->leave();
 
         if ( this->m_holder.contains(transit.total()) == true ) {
             this->m_active = this->m_holder[transit.total()];
-            this->m_active->on_enter();
+            this->m_active->enter();
         } else
             this->m_active = 0;
 
         return this->m_active != 0;
+    }
+
+    template <class State>
+    bool
+    StateMachine<State>::finish()
+    {
+        this->m_holder.for_each([](auto& index, auto& state) {
+            state->detach();
+        });
+
+        return true;
     }
 
     template <class State>
