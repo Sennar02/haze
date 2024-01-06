@@ -1,75 +1,71 @@
 #ifndef FAZE_ENGINE_HPP
 #define FAZE_ENGINE_HPP
 
-#include <faze/StateMachine.hpp>
-#include <faze/State.hpp>
+#include <faze/ScreenManager.hpp>
 
 namespace fz
 {
-    // Move after resource management
-    static const ma::f32 g_aspect_width  = 16;
-    static const ma::f32 g_aspect_height = 9;
-
-    static const ma::u32 g_window_width  = 720;
-    static const ma::u32 g_window_height = g_window_width *
-                                           (g_aspect_height /
-                                               g_aspect_width);
-
-    static const ma::u32 g_window_cx = g_window_width / 2;
-    static const ma::u32 g_window_cy = g_window_height / 2;
-
-    static const ma::f32 g_tile_width  = 16;
-    static const ma::f32 g_tile_height = 16;
-
-    static const ma::u32 g_matrix_width  = 16;
-    static const ma::u32 g_matrix_height = 9;
-
-    static const ma::f32 g_factor_width = g_window_width /
-                                          (g_matrix_width *
-                                              g_tile_width);
-    static const ma::f32 g_factor_height = g_window_height /
-                                           (g_matrix_height *
-                                               g_tile_height);
-
     class Engine
+        : public ScreenManager
     {
     public:
-        Engine(ma::BaseOrigin* origin, ma::usize size);
+        /**
+         *
+         */
+        Engine(u32 size);
 
+        /**
+         *
+         */
         bool
-        is_active() const;
+        isActive() const;
 
-        void
-        loop(ma::u16 index, ma::usize frames = 60);
-
-        StateMachine<State>&
-        states();
-
-        const StateMachine<State>&
-        states() const;
+        /**
+         *
+         */
+        bool
+        loop(String name, u32 frames = 60);
 
     private:
+        /**
+         *
+         */
         void
         handle(const sf::Event& event);
 
+        /**
+         *
+         */
         void
-        update(float delta);
+        update(const sf::Time& delta);
 
+        /**
+         *
+         */
         void
-        render(sf::RenderWindow& window);
+        render();
 
     public:
         // Move after resource management
         sf::VideoMode win_vmode = {g_window_width, g_window_height};
         const char*   win_title = "Faze";
-        ma::usize     win_style = sf::Style::Default;
+        u32           win_style = sf::Style::Default;
 
     private:
-        sf::RenderWindow m_window;
-        sf::Clock        m_clock;
-        bool             m_active;
+        /**
+         *
+         */
+        bool m_active;
 
-        StateMachine<State> m_states;
+        /**
+         *
+         */
+        sf::RenderWindow m_window;
+
+        /**
+         *
+         */
+        sf::Clock m_clock;
     };
 } // namespace fz
 

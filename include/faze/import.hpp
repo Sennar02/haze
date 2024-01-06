@@ -4,12 +4,13 @@
 #include <faze/depend.hpp>
 #include <faze/define.hpp>
 
+#include <faze/Screen.hpp>
+#include <faze/ScreenManager.hpp>
 #include <faze/Engine.hpp>
-#include <faze/State.hpp>
 
-#include <faze/StateMachine.hpp>
-
-#include <faze/TitleState.hpp>
-#include <faze/ConfigState.hpp>
+#include <faze/Vec2.hpp>
+#include <faze/Buffer2D.hpp>
+#include <faze/Maze.hpp>
+#include <faze/MazeScreen.hpp>
 
 #endif // FAZE_IMPORT_HPP

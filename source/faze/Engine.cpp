@@ -1,26 +1,22 @@
 #include <faze/Engine.hpp>
-#include <faze/State.hpp>
-
-#include <smal/Memory/import.hpp>
-#include <smal/Parser/import.hpp>
 
 namespace fz
 {
-    Engine::Engine(ma::BaseOrigin* origin, ma::usize size)
-        : m_window {}
-        , m_clock {}
+    Engine::Engine(ma::u32 size)
+        : ScreenManager(size)
         , m_active {true}
-        , m_states {origin, size}
+        , m_window {}
+        , m_clock {}
     { }
 
     bool
-    Engine::is_active() const
+    Engine::isActive() const
     {
-        return this->m_active;
+        return m_active;
     }
 
-    void
-    Engine::loop(ma::u16 index, ma::usize frames)
+    bool
+    Engine::loop(String name, ma::u32 frames)
     {
         // Move "start", "frames" after resource management
 
@@ -28,80 +24,56 @@ namespace fz
         sf::Time  delta;
         sf::Event event;
 
-        if ( this->m_states.launch(index, 0) == false )
-            return;
+        if ( launch(name) == false ) return false;
 
         // Move after resource management
-        this->m_window.create(win_vmode, win_title, win_style);
+        m_window.create(win_vmode, win_title, win_style);
+        m_window.clear();
 
-        while ( this->m_active ) {
-            delta += this->m_clock.restart();
+        while ( m_active ) {
+            delta += m_clock.restart();
 
-            while ( this->m_window.pollEvent(event) )
-                this->handle(event);
+            while ( m_window.pollEvent(event) )
+                handle(event);
 
-            for ( ; delta < slice; delta -= slice )
-                this->update(slice.asSeconds());
+            if ( m_active ) {
+                for ( ; slice < delta; delta -= slice )
+                    update(slice);
 
-            this->render(this->m_window);
+                render();
+            } else
+                break;
         }
 
-        this->m_states.finish();
-        this->m_window.close();
-    }
+        m_window.close();
 
-    StateMachine<State>&
-    Engine::states()
-    {
-        return this->m_states;
-    }
-
-    const StateMachine<State>&
-    Engine::states() const
-    {
-        return this->m_states;
+        return true;
     }
 
     void
     Engine::handle(const sf::Event& event)
     {
-        State*  active = this->m_states.active();
-        ma::u16 family = 0;
-        ma::u16 status = 0;
+        Screen* screen = active();
 
-        if ( active != 0 ) {
-            family = active->family();
-            status = active->handle(event);
-
-            if ( status != 0 )
-                this->m_active = this->m_states.launch(
-                    family, status);
+        if ( screen != 0 ) {
+            if ( screen->handle(event) == false )
+                m_active = launch(screen->next());
         } else
-            this->m_active = false;
+            m_active = false;
     }
 
     void
-    Engine::update(float delta)
+    Engine::update(const sf::Time& delta)
     {
-        State* active = this->m_states.active();
-
-        if ( active != 0 )
-            active->update(delta);
+        active()->update(delta.asSeconds());
     }
 
     void
-    Engine::render(sf::RenderWindow& window)
+    Engine::render()
     {
-        State* active = this->m_states.active();
+        m_window.display();
+        m_window.clear();
 
-        // Move after resource management
-        auto clear = sf::Color {255, 255, 255};
-
-        window.clear(clear);
-
-        if ( active != 0 )
-            active->render(window);
-
-        window.display();
+        active()->render(m_window);
     }
 } // namespace fz

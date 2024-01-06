@@ -1,72 +1,69 @@
-#ifndef FAZE_STATE_HPP
-#define FAZE_STATE_HPP
+#ifndef FAZE_SCREEN_HPP
+#define FAZE_SCREEN_HPP
 
 #include <faze/define.hpp>
 
 namespace fz
 {
-    class State
+    class Screen
     {
     public:
         /**
          *
          */
-        State(ma::u16 family);
+        Screen();
 
         /**
          *
          */
-        virtual ~State() = default;
+        virtual ~Screen() = default;
 
         /**
          *
          */
-        ma::u16
-        status() const;
+        bool
+        isActive() const;
 
         /**
          *
          */
-        void
-        set_status(ma::u16 status);
+        bool
+        setNext(String next);
 
         /**
          *
          */
-        ma::u16
-        family() const;
-
-        /**
-         *
-         */
-        virtual void
-        enter() {};
+        String
+        next();
 
         /**
          *
          */
         virtual void
-        leave() {};
+        enter();
+
+        /**
+         *
+         */
+        virtual void
+        leave();
 
         /**
          *
          */
         virtual bool
-        attach()
-        {
-            return true;
-        }
+        attach();
 
         /**
          *
          */
-        virtual void
-        detach() {};
+        virtual bool
+        detach();
 
         /**
          *
          */
-        virtual ma::u16
+        virtual bool
         handle(const sf::Event& event) = 0;
 
         /**
@@ -81,28 +78,12 @@ namespace fz
         virtual void
         render(sf::RenderTarget& target) = 0;
 
-    private:
+    protected:
         /**
          *
          */
-        ma::u16 m_family;
-
-        /**
-         *
-         */
-        ma::u16 m_status;
-    };
-
-    struct StateFamily
-    {
-    private:
-        inline static ma::u16 s_count = 0;
-
-    public:
-        template <class State>
-        inline static const ma::u16 of =
-            s_count++;
+        String m_next;
     };
 } // namespace fz
 
-#endif // FAZE_STATE_HPP
+#endif // FAZE_SCREEN_HPP
